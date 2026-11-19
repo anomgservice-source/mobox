@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bureau Windows 11</title>
+<style>
+:root{--win-bg:#f3f3f3;--win-fg:#1b1b1b;--bar:#dcdcdc;--task:rgba(24,28,40,.88);box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--win-bg:#202531;--win-fg:#f2f4f8;--bar:#2c3242}}
+:root[data-theme="dark"]{--win-bg:#202531;--win-fg:#f2f4f8;--bar:#2c3242}
+html,body{height:100%;margin:0;overflow:hidden;background:#050b1c;color:#fff;font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-user-select:none;user-select:none;touch-action:none}
+body.m{cursor:none}
+.wall{position:fixed;inset:0;background:
+radial-gradient(ellipse 28% 42% at 58% 62%,#2f78ff 0%,transparent 70%),
+radial-gradient(ellipse 22% 34% at 72% 48%,#1a4fe0 0%,transparent 72%),
+radial-gradient(ellipse 18% 30% at 44% 70%,#1d6bff 0%,transparent 70%),
+radial-gradient(ellipse 70% 90% at 50% 40%,#0d2a6b 0%,#050b1c 78%)}
+.icons{position:absolute;left:10px;top:calc(env(safe-area-inset-top,0px) + 8px);display:flex;flex-direction:column;gap:12px}
+.ic{width:84px;padding:6px 2px;border-radius:6px;text-align:center;font-size:13px;line-height:1.2}
+.ic i{display:block;font-style:normal;font-size:38px;margin-bottom:4px}
+.ic.sel{background:rgba(255,255,255,.18)}
+.task{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;height:calc(52px + env(safe-area-inset-bottom,0px));padding:0 12px env(safe-area-inset-bottom,0px);background:var(--task);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.08);z-index:900}
+.task .mid{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px}
+.tb-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:6px;font-size:22px}
+.tb-btn:active{background:rgba(255,255,255,.12)}
+.logo{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:20px;height:20px}
+.logo b{background:#3aa0ff;border-radius:1px}
+.search{display:flex;align-items:center;gap:8px;width:230px;height:36px;padding:0 14px;border-radius:18px;background:rgba(255,255,255,.1);font-size:14px;color:#dfe6f5}
+.tray{display:flex;align-items:center;gap:12px;font-size:15px}
+.clock{text-align:right;font-size:12px;line-height:1.3}
+.start{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(62px + env(safe-area-inset-bottom,0px));width:min(360px,80vw);padding:14px;border-radius:12px;background:rgba(30,35,50,.96);border:1px solid rgba(255,255,255,.1);z-index:950;display:none}
+.start.on{display:block}
+.start h3{margin:0 0 10px;font-size:14px;font-weight:600}
+.start .it{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;font-size:15px}
+.start .it:active{background:rgba(255,255,255,.12)}
+.win{position:absolute;width:min(420px,70vw);background:var(--win-bg);color:var(--win-fg);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.5);overflow:hidden}
+.win .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bar);font-size:13px;touch-action:none}
+.win .x{width:28px;height:24px;display:grid;place-items:center;border-radius:4px}
+.win .x:active{background:#e5484d;color:#fff}
+.win .body{padding:14px 16px;font-size:14px;line-height:1.5}
+.win .body p{margin:0 0 8px}
+.addr{padding:6px 12px;border-radius:14px;background:var(--bar);font-size:13px;margin-bottom:10px}
+#cur{position:fixed;left:0;top:0;width:22px;height:22px;pointer-events:none;z-index:9999;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+#cur.dn{scale:.85}
+#rot{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;background:#050b1c;font-size:18px}
+#rot span{font-size:48px}
+@media (orientation:portrait){#rot{display:flex}}
+</style>
+</head>
+<body>
+<div class="wall"></div>
+
+<div class="icons" id="icons"></div>
+
+<div class="start" id="start">
+  <h3>Applications</h3>
+  <div id="startList"></div>
+</div>
+
+<div class="task">
+  <div class="tb-btn">🗔</div>
+  <div class="mid">
+    <div class="tb-btn" id="startBtn"><div class="logo"><b></b><b></b><b></b><b></b></div></div>
+    <div class="search">🔍 Rechercher</div>
+    <div class="tb-btn">📁</div>
+    <div class="tb-btn">⚙️</div>
+  </div>
+  <div class="tray">
+    <span>📶</span><span>🔊</span><span>🔋</span>
+    <div class="clock"><div id="h"></div><div id="d"></div></div>
+  </div>
+</div>
+
+<svg id="cur" viewBox="0 0 22 22" hidden><path d="M3 1.5v16l4.2-3.8 2.9 6.6 2.4-1.1-2.9-6.5 5.8-.2z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+
+<div id="rot"><span>📱</span>Tourne ton téléphone en mode paysage pour voir le bureau.</div>
+
+<script>
+var $ = function (s) { return document.querySelector(s); };
+var apps = [
+  { id: "pc", t: "Ce PC", i: "🖥️", b: "<p>Disque local (C:)</p><p>Bureau, Documents, Téléchargements, Images</p>" },
+  { id: "inst", t: "UiInstallateur", i: "🧰", b: "<p>Choisis un programme à installer.</p><p>Aucun programme disponible pour l’instant.</p>" },
+  { id: "chrome", t: "UiChrome", i: "🌐", b: "<div class='addr'>https://</div><p>Nouvel onglet</p>" }
+];
+var z = 10, n = 0;
+
+apps.forEach(function (a) {
+  var d = document.createElement("div");
+  d.className = "ic"; d.dataset.id = a.id;
+  d.innerHTML = "<i>" + a.i + "</i>" + a.t;
+  d.addEventListener("click", function (e) {
+    e.stopPropagation();
+    document.querySelectorAll(".ic").forEach(function (x) { x.classList.remove("sel"); });
+    d.classList.add("sel");
+    openWin(a);
+  });
+  $("#icons").appendChild(d);
+
+  var s = document.createElement("div");
+  s.className = "it"; s.innerHTML = "<span style='font-size:24px'>" + a.i + "</span>" + a.t;
+  s.addEventListener("click", function (e) { e.stopPropagation(); $("#start").classList.remove("on"); openWin(a); });
+  $("#startList").appendChild(s);
+});
+
+function openWin(a) {
+  var w = document.createElement("div");
+  w.className = "win";
+  w.style.left = (130 + n * 28) + "px";
+  w.style.top = (24 + n * 28) + "px";
+  w.style.zIndex = ++z; n = (n + 1) % 6;
+  w.innerHTML = "<div class='bar'><span>" + a.i + " " + a.t + "</span><span class='x'>✕</span></div><div class='body'>" + a.b + "</div>";
+  w.querySelector(".x").addEventListener("click", function () { w.remove(); });
+  w.addEventListener("pointerdown", function () { w.style.zIndex = ++z; });
+  var bar = w.querySelector(".bar"), ox = 0, oy = 0, drag = false;
+  bar.addEventListener("pointerdown", function (e) {
+    drag = true; ox = e.clientX - w.offsetLeft; oy = e.clientY - w.offsetTop; bar.setPointerCapture(e.pointerId);
+  });
+  bar.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    w.style.left = (e.clientX - ox) + "px"; w.style.top = (e.clientY - oy) + "px";
+  });
+  bar.addEventListener("pointerup", function () { drag = false; });
+  document.body.appendChild(w);
+}
+
+$("#startBtn").addEventListener("click", function (e) { e.stopPropagation(); $("#start").classList.toggle("on"); });
+document.addEventListener("click", function () {
+  $("#start").classList.remove("on");
+  document.querySelectorAll(".ic").forEach(function (x) { x.classList.remove("sel"); });
+});
+
+var cur = $("#cur");
+function moveCur(e) {
+  cur.removeAttribute("hidden");
+  cur.style.transform = "translate(" + e.clientX + "px," + e.clientY + "px)";
+  document.body.classList.toggle("m", e.pointerType === "mouse");
+}
+document.addEventListener("pointermove", moveCur);
+document.addEventListener("pointerdown", function (e) { moveCur(e); cur.classList.add("dn"); });
+document.addEventListener("pointerup", function () { cur.classList.remove("dn"); });
+
+function tick() {
+  var d = new Date(), p = function (v) { return String(v).padStart(2, "0"); };
+  $("#h").textContent = p(d.getHours()) + ":" + p(d.getMinutes());
+  $("#d").textContent = p(d.getDate()) + "-" + p(d.getMonth() + 1) + "-" + d.getFullYear();
+}
+tick(); setInterval(tick, 15000);
+</script>
+</body>
+</html>
