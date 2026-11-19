@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+def vc = (project.findProperty('vc') ?: '1').toInteger()
+
 android {
     namespace 'com.anomg.mobox'
     compileSdk 34
@@ -10,8 +12,17 @@ android {
         applicationId 'com.anomg.mobox'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName '1.0'
+        versionCode vc
+        versionName "1.${vc}"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
     }
 
     compileOptions {

@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,9 +29,11 @@ jobs:
           cp index.html app/src/main/assets/index.html
 
       - name: Construire l'APK
-        run: gradle assembleDebug
+        run: gradle assembleDebug -Pvc=${{ github.run_number }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: mobox-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Publier la version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk mobox.apk
+          gh release create "v${{ github.run_number }}" mobox.apk --repo "${{ github.repository }}" --title "Mobox v${{ github.run_number }}" --notes "Installe mobox.apk" --latest
