@@ -2,206 +2,134 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mobox</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07132f">
+<title>Mobox Desktop — Bureau</title>
 <style>
-:root{--ln:rgba(255,255,255,.08);box-sizing:border-box}
-html,body{height:100%;margin:0;overflow:hidden;background:#050b1c;color:#fff;font:14px "Segoe UI",system-ui,Roboto,sans-serif;-webkit-user-select:none;user-select:none;touch-action:none;cursor:none}
-svg{display:block}
-.wall{position:fixed;inset:0;background:radial-gradient(ellipse 28% 42% at 58% 62%,#2f78ff,transparent 70%),radial-gradient(ellipse 22% 34% at 72% 48%,#1a4fe0,transparent 72%),radial-gradient(ellipse 18% 30% at 44% 70%,#1d6bff,transparent 70%),radial-gradient(ellipse 70% 90% at 50% 40%,#0d2a6b,#050b1c 78%)}
-.icons{position:absolute;left:10px;top:calc(env(safe-area-inset-top,0px) + 8px);display:flex;flex-direction:column;gap:10px}
-.ic{width:88px;padding:6px 2px;border-radius:6px;text-align:center;font-size:13px}
-.ic svg{width:44px;height:44px;margin:0 auto 4px}
-.ic.sel{background:rgba(255,255,255,.18)}
-.task{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;height:calc(52px + env(safe-area-inset-bottom,0px));padding:0 12px env(safe-area-inset-bottom,0px);background:rgba(24,28,40,.9);border-top:1px solid var(--ln);z-index:900}
-.mid{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px}
-.tb{width:40px;height:40px;display:grid;place-items:center;border-radius:6px}
-.tb svg{width:24px;height:24px}
-.tb.on{background:rgba(255,255,255,.12)}
-.search{display:flex;align-items:center;gap:8px;width:230px;height:36px;padding:0 14px;border-radius:18px;background:rgba(255,255,255,.1);color:#dfe6f5}
-.search svg{width:18px;height:18px}
-.tray{display:flex;align-items:center;gap:12px}
-.tray svg{width:18px;height:18px}
-.clock{text-align:right;font-size:12px;line-height:1.3}
-.start{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(62px + env(safe-area-inset-bottom,0px));width:min(360px,80vw);padding:14px;border-radius:12px;background:rgba(30,35,50,.96);border:1px solid var(--ln);z-index:950;display:none}
-.start.on{display:block}
-.it{display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px}
-.it svg{width:28px;height:28px}
-.win{position:absolute;background:#1c1c1c;color:#f3f3f3;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;width:min(420px,70vw)}
-.win.big{width:min(92vw,840px);height:min(72vh,430px);display:flex;flex-direction:column}
-.win.max{left:0!important;top:0!important;width:100vw;height:calc(100vh - 52px);border-radius:0}
-.bar{display:flex;justify-content:space-between;align-items:center;padding-left:12px;height:34px;background:#202020;font-size:13px}
-.t{display:flex;align-items:center;gap:8px}
-.t svg{width:18px;height:18px}
-.btn{width:40px;height:34px;display:grid;place-items:center;font-style:normal;font-weight:400}
-.btn.x:active{background:#c42b1c}
-.bar>span:last-child{display:flex}
-.body{padding:14px 16px;line-height:1.5}
-.big .body{padding:0;flex:1;display:flex;flex-direction:column;min-height:0}
-.tool{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#2b2b2b}
-.tool>span{width:26px;text-align:center;font-size:18px;color:#bbb}
-.addr,.sch{display:flex;gap:6px;align-items:center;padding:6px 10px;border-radius:6px;background:#383838;font-size:13px}
-.addr{flex:1}
-.sch{width:140px;color:#ccc}
-.addr svg,.sch svg{width:16px;height:16px}
-.ex{flex:1;display:flex;min-height:0}
-.nav{width:170px;padding:8px;border-right:1px solid var(--ln);overflow:auto}
-.nav div{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:6px;font-size:13px}
-.nav svg{width:20px;height:18px}
-.nav .sel{background:#383838}
-.nav hr{border:0;border-top:1px solid var(--ln);margin:6px 0}
-.main{flex:1;padding:14px 18px;overflow:auto}
-.main h4{margin:0 0 8px;font-size:15px;font-weight:600}
-.grid{display:flex;flex-wrap:wrap;gap:4px 16px;margin-bottom:14px}
-.tile{display:flex;align-items:center;gap:10px;width:190px;padding:6px;border-radius:6px}
-.tile svg{width:46px;height:40px}
-.drv{display:flex;gap:12px;align-items:center}
-.drv svg{width:54px;height:30px}
-.pb{width:170px;height:8px;background:#e6e6e6;margin:4px 0}
-.pb i{display:block;width:69%;height:100%;background:#1e90d6}
-.sm{font-size:12px;color:#aaa}
-.addr2{padding:6px 12px;border-radius:14px;background:#2b2b2b;margin-bottom:10px}
-#cur{position:fixed;left:0;top:0;width:24px;height:24px;pointer-events:none;z-index:9999;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
-#cur.dn{scale:.85}
-#rot{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;text-align:center;background:#050b1c;font-size:18px}
-@media (orientation:portrait){#rot{display:flex}}
+:root{--panel:#171d2b;--panel2:#252c3d;--text:#f4f7ff;--accent:#48a9ff;--win:#f4f6fb;--wintext:#202535;--line:rgba(255,255,255,.12);color-scheme:dark}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden}
+body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:#06112b;color:var(--text);user-select:none;-webkit-tap-highlight-color:transparent}
+.desktop{position:fixed;inset:0;background:
+radial-gradient(ellipse 24% 40% at 60% 64%,#2876ff 0%,transparent 72%),
+radial-gradient(ellipse 20% 32% at 73% 48%,#174bd0 0%,transparent 74%),
+radial-gradient(ellipse 68% 90% at 50% 40%,#0d2a68 0%,#050b1c 78%)}
+.icons{position:absolute;top:max(7px,env(safe-area-inset-top));left:7px;display:grid;grid-auto-flow:row;grid-template-columns:repeat(2,minmax(58px,72px));gap:5px;z-index:2}
+.icon{min-height:62px;padding:5px 3px;border:1px solid transparent;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;font-size:10px;line-height:1.1;color:#fff;text-shadow:0 1px 3px #000;cursor:pointer}
+.icon .glyph{font-size:25px;line-height:1.1}
+.icon:active,.icon.selected{background:#ffffff25;border-color:#ffffff35}
+.taskbar{position:absolute;left:0;right:0;bottom:0;min-height:43px;padding:4px max(7px,env(safe-area-inset-right)) calc(4px + env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;gap:5px;background:rgba(20,25,38,.91);border-top:1px solid #ffffff18;backdrop-filter:blur(18px);z-index:1000}
+.task-left,.task-center,.tray{display:flex;align-items:center;gap:4px;min-width:0}
+.task-center{position:absolute;left:50%;transform:translateX(-50%);gap:5px}
+.tb{width:32px;height:32px;flex:0 0 32px;border:0;border-radius:6px;background:transparent;color:white;font-size:17px;display:grid;place-items:center}
+.tb:active{background:#ffffff20}
+.logo{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;width:17px;height:17px}
+.logo i{background:#3b9fff;border-radius:1px}
+.searchbox{width:clamp(105px,30vw,210px);height:29px;border-radius:18px;background:#ffffff18;display:flex;align-items:center;gap:7px;padding:0 10px;color:#e3e9f7;font-size:12px}
+.searchbox input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:white;font:inherit}
+.tray{font-size:12px;gap:7px}
+.clock{text-align:right;font-size:10px;line-height:1.25;white-space:nowrap}
+.start{position:absolute;z-index:1100;left:50%;bottom:calc(50px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(330px,calc(100vw - 24px));max-height:min(70vh,520px);overflow:auto;padding:12px;border:1px solid #ffffff22;border-radius:13px;background:rgba(25,31,47,.97);box-shadow:0 14px 42px #0008;display:none}
+.start.open{display:block}
+.start h3{font-size:13px;margin:0 0 8px}
+.app-list{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+.app-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;font-size:12px}
+.app-item:active{background:#ffffff20}
+.app-item span:first-child{font-size:21px}
+.window{position:absolute;z-index:20;left:3vw;top:4vh;width:94vw;height:calc(100dvh - 58px);max-height:calc(100dvh - 58px);border-radius:10px;overflow:hidden;background:var(--win);color:var(--wintext);box-shadow:0 14px 45px #0008;display:flex;flex-direction:column;border:1px solid #0002}
+.window.max{left:0!important;top:0!important;width:100vw!important;height:calc(100dvh - 47px)!important;max-height:none;border-radius:0}
+.winbar{height:34px;min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 10px;background:#e5e9f1;font-size:12px;touch-action:pan-y}
+.win-title{display:flex;align-items:center;gap:7px;min-width:0;overflow:hidden;white-space:nowrap}
+.win-actions{display:flex;gap:3px}
+.win-action{width:27px;height:25px;border:0;border-radius:5px;background:transparent;color:#202535;font-size:13px}
+.win-action:active{background:#cbd3e2}
+.win-action.close:active{background:#e5484d;color:#fff}
+.winbody{padding:12px;overflow:auto;flex:1;font-size:12px;line-height:1.45}
+.toolbar{display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.toolbtn,.primary{border:1px solid #d5dbe6;background:#fff;color:#273044;border-radius:7px;padding:7px 9px;font-size:11px}
+.primary{background:#1676d2;color:#fff;border-color:#1676d2}
+.filegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.filetile{padding:11px 5px;border:1px solid #e1e5ed;border-radius:8px;text-align:center;background:#fff;font-size:11px}
+.filetile b{display:block;font-size:25px;margin-bottom:5px}
+.address{width:100%;padding:8px 10px;border:1px solid #d7deea;border-radius:18px;background:#fff;color:#263044;font-size:12px}
+.note{padding:10px;border-radius:8px;background:#eaf3ff;color:#244a70;margin:8px 0}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e2e6ed}
+.hidden{display:none!important}
+@media(max-width:520px){.icons{grid-template-columns:repeat(2,64px)}.task-center{gap:2px}.searchbox{width:clamp(88px,28vw,145px)}.tray{gap:5px}.task-left>.tb:nth-child(2){display:none}}
+@media(orientation:portrait){.icons{grid-template-columns:repeat(3,60px);top:max(5px,env(safe-area-inset-top))}.icon{min-height:55px}.taskbar{min-height:45px}.task-center{left:47%}.searchbox{width:clamp(80px,25vw,130px)}.window{left:2vw;top:2vh;width:96vw;height:calc(100dvh - 57px)}}
 </style>
 </head>
 <body>
-<div class="wall"></div>
+<div class="desktop" id="desktop"></div>
 <div class="icons" id="icons"></div>
-<div class="start" id="start"></div>
 
-<div class="task">
-  <div class="tb" data-i="wid"></div>
-  <div class="mid">
-    <div class="tb" id="sb" data-i="win"></div>
-    <div class="search"><i data-i="srch"></i>Rechercher</div>
-    <div class="tb" id="bx" data-i="fold1"></div>
-    <div class="tb" id="bg" data-i="gear"></div>
+<div class="start" id="start">
+  <h3>Applications</h3>
+  <div class="app-list" id="appList"></div>
+  <div class="note">Bureau Mobox — interface de démonstration. L’exécution des fichiers Windows (.exe) nécessite un moteur compatible séparé.</div>
+</div>
+
+<div class="taskbar">
+  <div class="task-left">
+    <button class="tb" title="Vue des tâches" onclick="showAbout()">▦</button>
   </div>
-  <div class="tray"><i data-i="wifi"></i><i data-i="vol"></i><i data-i="bat"></i>
-    <div class="clock"><div id="h"></div><div id="d"></div></div>
+  <div class="task-center">
+    <button class="tb" id="startBtn" title="Démarrer"><span class="logo"><i></i><i></i><i></i><i></i></span></button>
+    <label class="searchbox">⌕ <input id="search" placeholder="Rechercher" autocomplete="off"></label>
+    <button class="tb" title="Explorateur" onclick="launch('pc')">📁</button>
+    <button class="tb" title="Paramètres" onclick="launch('settings')">⚙</button>
+  </div>
+  <div class="tray">
+    <span>⌁</span><span>◖</span><span>▰</span>
+    <div class="clock"><div id="time"></div><div id="date"></div></div>
   </div>
 </div>
 
-<svg id="cur" viewBox="0 0 22 22"><path d="M3 1.5v16l4.2-3.8 2.9 6.6 2.4-1.1-2.9-6.5 5.8-.2z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
-<div id="rot">Tourne ton téléphone en mode paysage.</div>
-
 <script>
-var $=function(s){return document.querySelector(s)};
-function fold(c,g){return '<svg viewBox="0 0 48 40"><path d="M3 6a3 3 0 0 1 3-3h12l4 4h20a3 3 0 0 1 3 3v26a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" fill="'+c+'"/>'+g+'</svg>'}
-var W='stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
-var G={
- d:'<path d="M14 18h20M14 24h20M14 30h13" '+W+'/>',
- a:'<path d="M24 15v16M17 25l7 7 7-7" '+W+'/>',
- m:'<circle cx="19" cy="31" r="4" fill="#fff"/><path d="M23 31V16l9 3" '+W+'/>',
- i:'<path d="M10 34l9-12 6 8 4-5 9 9z" fill="#fff"/>',
- v:'<path d="M19 15v18l15-9z" fill="#fff"/>'};
-var S='viewBox="0 0 24 24"';
-var I={
- pc:'<svg viewBox="0 0 48 48"><rect x="4" y="6" width="40" height="26" rx="3" fill="#33b6e8"/><rect x="19" y="34" width="10" height="4" fill="#8fa3b0"/><rect x="13" y="38" width="22" height="3" rx="1.5" fill="#b8c4cc"/></svg>',
- tool:'<svg viewBox="0 0 48 48"><path d="M17 16v-4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" stroke="#444" stroke-width="3" fill="none"/><rect x="6" y="16" width="36" height="24" rx="3" fill="#e5483b"/><rect x="6" y="25" width="36" height="3" fill="#b3342a"/><rect x="21" y="23" width="6" height="7" rx="1" fill="#ffd1cc"/></svg>',
- web:'<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="#1fa0ff"/><g stroke="#fff" stroke-width="2" fill="none"><ellipse cx="24" cy="24" rx="8" ry="18"/><path d="M6 24h36M9 14h30M9 34h30"/></g></svg>',
- fold1:fold('#f4b73c','<rect x="3" y="16" width="42" height="21" rx="3" fill="#ffd55e"/>'),
- drive:'<svg viewBox="0 0 48 24"><rect x="2" y="6" width="44" height="14" rx="4" fill="#c9d1d9"/><circle cx="10" cy="13" r="1.8" fill="#3ddc6a"/></svg>',
- srch:'<svg '+S+'><circle cx="10" cy="10" r="6" fill="none" stroke="#fff" stroke-width="2"/><path d="M15 15l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>',
- gear:'<svg '+S+'><circle cx="12" cy="12" r="7.5" fill="none" stroke="#9db0c8" stroke-width="4" stroke-dasharray="3.2 2.2"/><circle cx="12" cy="12" r="5.5" fill="#9db0c8"/><circle cx="12" cy="12" r="2.4" fill="#1b2438"/></svg>',
- wifi:'<svg '+S+' fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2 9a14 14 0 0 1 20 0M5 13a9 9 0 0 1 14 0M8.5 16.5a4 4 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="#fff"/></svg>',
- vol:'<svg '+S+' fill="#fff"><path d="M3 9h4l5-4v14l-5-4H3z"/><path d="M15 9a4 4 0 0 1 0 6M17.5 6.5a8 8 0 0 1 0 11" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>',
- bat:'<svg '+S+'><rect x="2" y="7" width="18" height="10" rx="2.5" fill="none" stroke="#fff" stroke-width="1.8"/><rect x="4.5" y="9.5" width="11" height="5" rx="1" fill="#fff"/><rect x="21" y="10" width="2" height="4" rx="1" fill="#fff"/></svg>',
- wid:'<svg '+S+'><rect x="2" y="3" width="9" height="18" rx="2" fill="#e8eefc"/><rect x="13" y="3" width="9" height="8" rx="2" fill="#4da3ff"/><rect x="13" y="13" width="9" height="8" rx="2" fill="#2f7be0"/></svg>',
- win:'<svg '+S+'><path d="M2 4.5l8.5-1.2v8H2zM12 3l10-1.5v10H12zM2 13h8.5v8L2 19.7zM12 13h10v9.5L12 21z" fill="#3aa0ff"/></svg>'};
-var F=[["Documents","#7f93ad",G.d],["Téléchargements","#17a98a",G.a],["Musique","#e8735a",G.m],["Images","#2d8cf0",G.i],["Vidéos","#8a5cf0",G.v]];
-var NAV=[F[1],F[0],F[3],F[2],F[4]];
-document.querySelectorAll("[data-i]").forEach(function(e){e.innerHTML=I[e.dataset.i]});
-
-var z=10,n=0;
-function openWin(t,ic,body,cls){
-  var w=document.createElement("div");
-  w.className="win "+(cls||"");
-  w.style.left=(110+n*26)+"px";w.style.top=(12+n*26)+"px";w.style.zIndex=++z;n=(n+1)%6;
-  w.innerHTML='<div class="bar"><span class="t">'+ic+t+'</span><span><b class="btn" data-a="x">—</b><b class="btn" data-a="m">▢</b><b class="btn x" data-a="x">✕</b></span></div><div class="body">'+body+'</div>';
-  w.addEventListener("click",function(e){
-    var a=e.target.closest("[data-a]");if(!a)return;
-    if(a.dataset.a=="m")w.classList.toggle("max");else w.remove();
-  });
-  document.body.appendChild(w);return w;
-}
-
-function explorer(){
-  var w=openWin("Ce PC",I.pc,'<div class="tool"><span>←</span><span>→</span><span>↑</span><span>↻</span><div class="addr">'+I.pc+' › <b class="ad">Accueil</b></div><div class="sch">'+I.srch+'Rechercher</div></div><div class="ex"><div class="nav"></div><div class="main"></div></div>',"big");
-  var nav=w.querySelector(".nav"),main=w.querySelector(".main"),ad=w.querySelector(".ad");
-  function go(v){
-    ad.textContent=v;
-    nav.innerHTML=NAV.map(function(f){return '<div data-go="'+f[0]+'"'+(v==f[0]?' class="sel"':'')+'>'+fold(f[1],f[2])+f[0]+'</div>'}).join("")+
-      '<hr><div data-go="Accueil"'+(v=="Accueil"?' class="sel"':'')+'>'+I.pc+'Ce PC</div><div data-go="Interne (C:)"'+(v=="Interne (C:)"?' class="sel"':'')+'>'+I.drive+'Interne (C:)</div>';
-    if(v=="Accueil"){
-      main.innerHTML='<h4>Dossiers (5)</h4><div class="grid">'+F.map(function(f){return '<div class="tile" data-go="'+f[0]+'">'+fold(f[1],f[2])+f[0]+'</div>'}).join("")+
-        '</div><h4>Appareils et lecteurs</h4><div class="drv" data-go="Interne (C:)">'+I.drive+'<div>Interne (C:)<div class="pb"><i></i></div><div class="sm">33,0 Go libres sur 107,0 Go</div></div></div>';
-    }else main.innerHTML='<h4>'+v+'</h4><div class="sm">Ce dossier est vide.</div>';
-  }
-  w.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g)go(g.dataset.go)});
-  go("Accueil");
-}
-
-var apps=[
-  {t:"Ce PC",i:I.pc,o:explorer},
-  {t:"UiInstallateur",i:I.tool,o:function(){openWin("UiInstallateur",I.tool,"<p>Choisis un programme à installer.</p><p class='sm'>Aucun programme disponible pour l’instant.</p>")}},
-  {t:"UiChrome",i:I.web,o:function(){openWin("UiChrome",I.web,"<div class='addr2'>https://</div><p>Nouvel onglet</p>")}}
+const $=s=>document.querySelector(s);
+const apps=[
+ {id:"pc",name:"Ce PC",icon:"🖥️"},
+ {id:"inst",name:"Installateur",icon:"🧰"},
+ {id:"chrome",name:"Navigateur",icon:"🌐"},
+ {id:"settings",name:"Paramètres",icon:"⚙️"},
+ {id:"about",name:"À propos",icon:"ℹ️"}
 ];
-apps.forEach(function(a){
-  var d=document.createElement("div");d.className="ic";d.innerHTML=a.i+a.t;
-  d.addEventListener("click",function(e){e.stopPropagation();document.querySelectorAll(".ic").forEach(function(x){x.classList.remove("sel")});d.classList.add("sel");a.o()});
-  $("#icons").appendChild(d);
-  var s=document.createElement("div");s.className="it";s.innerHTML=a.i+a.t;
-  s.addEventListener("click",function(e){e.stopPropagation();$("#start").classList.remove("on");a.o()});
-  $("#start").appendChild(s);
-});
-$("#bx").addEventListener("click",function(e){e.stopPropagation();explorer()});
-$("#bg").addEventListener("click",function(e){e.stopPropagation();openWin("Paramètres",I.gear,"<p>Affichage : paysage</p><p class='sm'>Version Mobox installée depuis GitHub.</p>")});
-$("#sb").addEventListener("click",function(e){e.stopPropagation();$("#start").classList.toggle("on")});
-document.addEventListener("click",function(){$("#start").classList.remove("on");document.querySelectorAll(".ic").forEach(function(x){x.classList.remove("sel")})});
-
-/* Souris : un glissement déplace le pointeur, qui reste où on le laisse. Un appui court clique. Un appui long puis glisser déplace une fenêtre. */
-var cur=$("#cur"),cx=innerWidth/2,cy=innerHeight/2,t0,mv=0,tm,grab=null;
-function place(){cur.style.transform="translate("+cx+"px,"+cy+"px)"}
-function front(el){var w=el&&el.closest(".win");if(w)w.style.zIndex=++z}
-function fire(){
-  var el=document.elementFromPoint(cx,cy);if(!el)return;
-  front(el);
-  el.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true,clientX:cx,clientY:cy,view:window}));
+let z=30,offset=0;
+function makeShortcuts(){
+ apps.forEach(a=>{
+  const d=document.createElement("button");d.className="icon";d.innerHTML=`<span class="glyph">${a.icon}</span><span>${a.name}</span>`;d.onclick=()=>launch(a.id);$("#icons").appendChild(d);
+  const item=document.createElement("button");item.className="app-item";item.innerHTML=`<span>${a.icon}</span><span>${a.name}</span>`;item.onclick=()=>{ $("#start").classList.remove("open");launch(a.id);};$("#appList").appendChild(item);
+ });
 }
-function grabAt(x,y){
-  var el=document.elementFromPoint(x,y),b=el&&el.closest(".bar");
-  if(b&&!el.closest(".btn")){var w=b.parentNode;if(w.classList.contains("max"))return;grab={w:w,dx:x-w.offsetLeft,dy:y-w.offsetTop};w.style.zIndex=++z;cur.classList.add("dn")}
+function content(id){
+ if(id==="pc")return `<div class="toolbar"><button class="toolbtn">← Retour</button><button class="toolbtn">↑</button><span>Ce PC　›　Stockage</span></div><div class="filegrid"><div class="filetile"><b>💽</b>Disque local (C:)</div><div class="filetile"><b>📁</b>Bureau</div><div class="filetile"><b>📂</b>Documents</div><div class="filetile"><b>⬇️</b>Téléchargements</div><div class="filetile"><b>🖼️</b>Images</div><div class="filetile"><b>🎵</b>Musique</div></div><p class="note">Explorateur visuel : les dossiers réels du téléphone ne sont pas encore reliés à cette interface.</p>`;
+ if(id==="inst")return `<h3>Installateur de programmes</h3><p>Ajoute ici les installateurs compatibles avec le moteur Windows qui sera intégré au projet.</p><div class="note">Aucun programme n’est installé pour le moment. Cette fenêtre est une maquette et ne lance pas les fichiers .exe.</div><button class="primary" onclick="alert('Le moteur d’installation n’est pas encore intégré.')">Choisir un fichier</button>`;
+ if(id==="chrome")return `<h3>Navigateur</h3><form class="toolbar" onsubmit="event.preventDefault();browse(this.url.value)"><input class="address" name="url" placeholder="Rechercher sur le Web ou saisir une adresse"><button class="primary">Ouvrir</button></form><div class="note">La navigation dépend des autorisations et de la configuration de la WebView Android.</div><button class="toolbtn" onclick="browse('https://www.google.com')">Ouvrir Google</button>`;
+ if(id==="settings")return `<h3>Paramètres</h3><div class="setting-row"><span>Thème</span><button class="toolbtn" onclick="toggleTheme()">Basculer clair/sombre</button></div><div class="setting-row"><span>Affichage</span><span>Plein écran adaptatif</span></div><div class="setting-row"><span>Interface</span><span>Compacte</span></div><div class="setting-row"><span>Version</span><span>Mobox Desktop V2</span></div>`;
+ return `<h3>Mobox Desktop V2</h3><p>Interface de bureau inspirée de Windows, optimisée pour les écrans Android.</p><p>Les fenêtres, le menu Démarrer, la recherche locale et les réglages sont interactifs.</p><div class="note">Ce bureau HTML ne constitue pas Windows et ne peut pas exécuter seul les logiciels .exe.</div>`;
 }
-function drag(){if(grab){grab.w.style.left=(cx-grab.dx)+"px";grab.w.style.top=(cy-grab.dy)+"px"}}
-document.addEventListener("touchstart",function(e){
-  e.preventDefault();var t=e.touches[0];t0={x:t.clientX,y:t.clientY};mv=0;
-  tm=setTimeout(function(){grabAt(cx,cy)},350);
-},{passive:false});
-document.addEventListener("touchmove",function(e){
-  e.preventDefault();var t=e.touches[0],dx=t.clientX-t0.x,dy=t.clientY-t0.y;
-  t0={x:t.clientX,y:t.clientY};mv+=Math.abs(dx)+Math.abs(dy);
-  if(mv>8&&!grab)clearTimeout(tm);
-  cx=Math.max(0,Math.min(innerWidth-2,cx+dx*1.6));cy=Math.max(0,Math.min(innerHeight-2,cy+dy*1.6));
-  place();drag();
-},{passive:false});
-document.addEventListener("touchend",function(e){
-  e.preventDefault();clearTimeout(tm);
-  if(grab){grab=null;cur.classList.remove("dn")}else if(mv<8)fire();
-},{passive:false});
-/* Vraie souris */
-document.addEventListener("mousedown",function(e){cx=e.clientX;cy=e.clientY;place();grabAt(cx,cy)});
-document.addEventListener("mousemove",function(e){cx=e.clientX;cy=e.clientY;place();drag()});
-document.addEventListener("mouseup",function(){grab=null;cur.classList.remove("dn")});
-place();
-
-function tick(){var d=new Date(),p=function(v){return String(v).padStart(2,"0")};
-  $("#h").textContent=p(d.getHours())+":"+p(d.getMinutes());
-  $("#d").textContent=p(d.getDate())+"-"+p(d.getMonth()+1)+"-"+d.getFullYear()}
-tick();setInterval(tick,15000);
+function launch(id){
+ const a=apps.find(x=>x.id===id)||apps[4];const w=document.createElement("section");w.className="window";w.style.zIndex=++z;
+ w.style.left=`${Math.max(0,3+offset*2)}vw`;w.style.top=`${Math.max(0,3+offset*2)}vh`;offset=(offset+1)%8;
+ w.innerHTML=`<div class="winbar"><div class="win-title"><span>${a.icon}</span><strong>${a.name}</strong></div><div class="win-actions"><button class="win-action minimize" title="Réduire">—</button><button class="win-action maximize" title="Agrandir">□</button><button class="win-action close" title="Fermer">✕</button></div></div><div class="winbody">${content(id)}</div>`;
+ w.querySelector(".close").onclick=()=>w.remove();
+ w.querySelector(".minimize").onclick=()=>w.classList.add("hidden");
+ w.querySelector(".maximize").onclick=()=>w.classList.toggle("max");
+ w.addEventListener("pointerdown",()=>w.style.zIndex=++z);
+ const bar=w.querySelector(".winbar");let drag=false,dx=0,dy=0;
+ bar.addEventListener("pointerdown",e=>{if(e.target.closest("button")||w.classList.contains("max"))return;drag=true;dx=e.clientX-w.offsetLeft;dy=e.clientY-w.offsetTop;bar.setPointerCapture(e.pointerId)});
+ bar.addEventListener("pointermove",e=>{if(!drag)return;w.style.left=Math.max(0,Math.min(innerWidth-w.offsetWidth,e.clientX-dx))+"px";w.style.top=Math.max(0,Math.min(innerHeight-w.offsetHeight-45,e.clientY-dy))+"px"});
+ bar.addEventListener("pointerup",()=>drag=false);bar.addEventListener("pointercancel",()=>drag=false);
+ document.body.appendChild(w);
+}
+function browse(value){let v=(value||"").trim();if(!v)return;if(!/^https?:\/\//i.test(v))v=/\s/.test(v)?"https://www.google.com/search?q="+encodeURIComponent(v):"https://"+v;window.open(v,"_blank");}
+function toggleTheme(){const root=document.documentElement;const dark=root.dataset.theme!=="light";root.dataset.theme=dark?"light":"dark";document.body.style.background=dark?"#e9edf5":"#06112b";alert("Thème modifié pour cette session.");}
+function showAbout(){launch("about")}
+$("#startBtn").onclick=()=>$("#start").classList.toggle("open");
+document.addEventListener("click",e=>{if(!e.target.closest("#start")&&!e.target.closest("#startBtn"))$("#start").classList.remove("open")});
+$("#search").addEventListener("input",e=>{const q=e.target.value.toLowerCase();$("#start").classList.add("open");document.querySelectorAll(".app-item").forEach((el,i)=>el.classList.toggle("hidden",!apps[i].name.toLowerCase().includes(q)))});
+function tick(){const d=new Date();$("#time").textContent=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});$("#date").textContent=d.toLocaleDateString("fr-FR");}
+makeShortcuts();tick();setInterval(tick,15000);
 </script>
 </body>
 </html>
