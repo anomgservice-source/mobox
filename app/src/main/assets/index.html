@@ -2,134 +2,197 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07132f">
-<title>Mobox Desktop — Bureau</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080f25">
+<title>Mobox Desktop</title>
 <style>
-:root{--panel:#171d2b;--panel2:#252c3d;--text:#f4f7ff;--accent:#48a9ff;--win:#f4f6fb;--wintext:#202535;--line:rgba(255,255,255,.12);color-scheme:dark}
+:root{
+  --task-h:64px; --accent:#39a9ef; --glass:rgba(25,31,48,.94);
+  --line:rgba(255,255,255,.13); --text:#f5f7ff;
+}
 *{box-sizing:border-box}
-html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden}
-body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:#06112b;color:var(--text);user-select:none;-webkit-tap-highlight-color:transparent}
-.desktop{position:fixed;inset:0;background:
-radial-gradient(ellipse 24% 40% at 60% 64%,#2876ff 0%,transparent 72%),
-radial-gradient(ellipse 20% 32% at 73% 48%,#174bd0 0%,transparent 74%),
-radial-gradient(ellipse 68% 90% at 50% 40%,#0d2a68 0%,#050b1c 78%)}
-.icons{position:absolute;top:max(7px,env(safe-area-inset-top));left:7px;display:grid;grid-auto-flow:row;grid-template-columns:repeat(2,minmax(58px,72px));gap:5px;z-index:2}
-.icon{min-height:62px;padding:5px 3px;border:1px solid transparent;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;font-size:10px;line-height:1.1;color:#fff;text-shadow:0 1px 3px #000;cursor:pointer}
-.icon .glyph{font-size:25px;line-height:1.1}
-.icon:active,.icon.selected{background:#ffffff25;border-color:#ffffff35}
-.taskbar{position:absolute;left:0;right:0;bottom:0;min-height:43px;padding:4px max(7px,env(safe-area-inset-right)) calc(4px + env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;gap:5px;background:rgba(20,25,38,.91);border-top:1px solid #ffffff18;backdrop-filter:blur(18px);z-index:1000}
-.task-left,.task-center,.tray{display:flex;align-items:center;gap:4px;min-width:0}
-.task-center{position:absolute;left:50%;transform:translateX(-50%);gap:5px}
-.tb{width:32px;height:32px;flex:0 0 32px;border:0;border-radius:6px;background:transparent;color:white;font-size:17px;display:grid;place-items:center}
-.tb:active{background:#ffffff20}
-.logo{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;width:17px;height:17px}
-.logo i{background:#3b9fff;border-radius:1px}
-.searchbox{width:clamp(105px,30vw,210px);height:29px;border-radius:18px;background:#ffffff18;display:flex;align-items:center;gap:7px;padding:0 10px;color:#e3e9f7;font-size:12px}
-.searchbox input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:white;font:inherit}
-.tray{font-size:12px;gap:7px}
-.clock{text-align:right;font-size:10px;line-height:1.25;white-space:nowrap}
-.start{position:absolute;z-index:1100;left:50%;bottom:calc(50px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(330px,calc(100vw - 24px));max-height:min(70vh,520px);overflow:auto;padding:12px;border:1px solid #ffffff22;border-radius:13px;background:rgba(25,31,47,.97);box-shadow:0 14px 42px #0008;display:none}
-.start.open{display:block}
-.start h3{font-size:13px;margin:0 0 8px}
-.app-list{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
-.app-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;font-size:12px}
-.app-item:active{background:#ffffff20}
-.app-item span:first-child{font-size:21px}
-.window{position:absolute;z-index:20;left:3vw;top:4vh;width:94vw;height:calc(100dvh - 58px);max-height:calc(100dvh - 58px);border-radius:10px;overflow:hidden;background:var(--win);color:var(--wintext);box-shadow:0 14px 45px #0008;display:flex;flex-direction:column;border:1px solid #0002}
-.window.max{left:0!important;top:0!important;width:100vw!important;height:calc(100dvh - 47px)!important;max-height:none;border-radius:0}
-.winbar{height:34px;min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 10px;background:#e5e9f1;font-size:12px;touch-action:pan-y}
-.win-title{display:flex;align-items:center;gap:7px;min-width:0;overflow:hidden;white-space:nowrap}
-.win-actions{display:flex;gap:3px}
-.win-action{width:27px;height:25px;border:0;border-radius:5px;background:transparent;color:#202535;font-size:13px}
-.win-action:active{background:#cbd3e2}
-.win-action.close:active{background:#e5484d;color:#fff}
-.winbody{padding:12px;overflow:auto;flex:1;font-size:12px;line-height:1.45}
-.toolbar{display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
-.toolbtn,.primary{border:1px solid #d5dbe6;background:#fff;color:#273044;border-radius:7px;padding:7px 9px;font-size:11px}
-.primary{background:#1676d2;color:#fff;border-color:#1676d2}
-.filegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
-.filetile{padding:11px 5px;border:1px solid #e1e5ed;border-radius:8px;text-align:center;background:#fff;font-size:11px}
-.filetile b{display:block;font-size:25px;margin-bottom:5px}
-.address{width:100%;padding:8px 10px;border:1px solid #d7deea;border-radius:18px;background:#fff;color:#263044;font-size:12px}
-.note{padding:10px;border-radius:8px;background:#eaf3ff;color:#244a70;margin:8px 0}
-.setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e2e6ed}
-.hidden{display:none!important}
-@media(max-width:520px){.icons{grid-template-columns:repeat(2,64px)}.task-center{gap:2px}.searchbox{width:clamp(88px,28vw,145px)}.tray{gap:5px}.task-left>.tb:nth-child(2){display:none}}
-@media(orientation:portrait){.icons{grid-template-columns:repeat(3,60px);top:max(5px,env(safe-area-inset-top))}.icon{min-height:55px}.taskbar{min-height:45px}.task-center{left:47%}.searchbox{width:clamp(80px,25vw,130px)}.window{left:2vw;top:2vh;width:96vw;height:calc(100dvh - 57px)}}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;color:var(--text);background:#071128}
+body{user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#desktop{
+  position:fixed;inset:0 0 var(--task-h) 0;overflow:hidden;
+  background:
+   radial-gradient(ellipse at 61% 70%,rgba(24,105,255,.92) 0,rgba(13,67,177,.58) 18%,transparent 42%),
+   radial-gradient(ellipse at 72% 48%,rgba(15,65,173,.55),transparent 38%),
+   linear-gradient(120deg,#050b1b,#091b43 55%,#050c20);
+}
+#desktop:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.1),transparent 18%,transparent 85%,rgba(0,0,0,.08))}
+#icons{position:absolute;z-index:2;top:18px;left:18px;display:grid;grid-auto-flow:row;grid-template-columns:repeat(1,76px);gap:16px}
+.desktop-icon{width:76px;min-height:76px;border:1px solid transparent;border-radius:9px;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;text-shadow:0 1px 4px #000;cursor:pointer;padding:5px}
+.desktop-icon:active,.desktop-icon:focus{background:rgba(90,160,255,.2);border-color:rgba(255,255,255,.25);outline:none}
+.desktop-icon .ico{font-size:32px;line-height:1.1;filter:drop-shadow(0 2px 2px #0005)}
+#taskbar{position:fixed;z-index:1000;bottom:0;left:0;right:0;height:var(--task-h);background:rgba(24,28,42,.97);border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:clamp(7px,1.3vw,18px);padding:0 clamp(10px,2vw,28px);backdrop-filter:blur(18px)}
+.tb-btn{height:42px;min-width:38px;border:0;border-radius:9px;background:transparent;color:#fff;font-size:21px;display:grid;place-items:center;padding:0 8px;cursor:pointer}
+.tb-btn:active,.tb-btn:hover{background:rgba(255,255,255,.12)}
+#startBtn{font-size:23px;color:#4ba5ff}
+#search{height:42px;flex:1;max-width:360px;min-width:85px;border-radius:24px;background:#303443;color:#e7eaf4;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:14px;cursor:pointer;white-space:nowrap;overflow:hidden}
+#search span:last-child{overflow:hidden;text-overflow:ellipsis}
+#taskApps{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow:hidden}
+#taskApps button{font-size:18px}
+#tray{display:flex;align-items:center;gap:clamp(7px,1.2vw,16px);font-size:16px;white-space:nowrap}
+#clock{font-size:12px;line-height:1.35;text-align:right;min-width:76px}
+#startMenu{display:none;position:fixed;z-index:1200;left:10px;bottom:calc(var(--task-h) + 8px);width:min(340px,calc(100vw - 20px));padding:15px;border:1px solid var(--line);border-radius:16px;background:rgba(26,31,48,.97);box-shadow:0 16px 50px #0008;backdrop-filter:blur(18px)}
+#startMenu.open{display:block}
+.menu-head{font-size:14px;font-weight:600;margin:2px 3px 12px}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.menu-app{border:0;border-radius:10px;background:transparent;color:white;padding:12px 5px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.menu-app:active,.menu-app:hover{background:#ffffff18}
+.menu-app b{font-size:24px;font-weight:400}
+#searchPanel{display:none;position:fixed;z-index:1200;left:50%;transform:translateX(-50%);bottom:calc(var(--task-h) + 8px);width:min(420px,calc(100vw - 20px));padding:14px;background:rgba(26,31,48,.98);border:1px solid var(--line);border-radius:14px}
+#searchPanel.open{display:block}
+#searchInput{width:100%;border:0;outline:0;border-radius:9px;padding:12px;background:#353b4c;color:white;font-size:15px}
+.window{position:absolute;z-index:20;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 24px));height:min(460px,calc(100% - 24px));min-width:260px;min-height:190px;background:rgba(245,247,252,.97);color:#202637;border:1px solid #ffffff70;border-radius:12px;box-shadow:0 18px 55px #0008;overflow:hidden;display:none;flex-direction:column}
+.window.active{display:flex}
+.window.maximized{left:6px!important;top:6px!important;transform:none!important;width:calc(100% - 12px)!important;height:calc(100% - 12px)!important}
+.titlebar{height:38px;min-height:38px;background:#f4f5f8;display:flex;align-items:center;justify-content:space-between;padding-left:12px;border-bottom:1px solid #d9dce4;touch-action:none;cursor:move}
+.wtitle{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.wcontrols{display:flex;height:100%}
+.wcontrols button{width:40px;border:0;background:transparent;color:#293044;font-size:14px}
+.wcontrols button:active{background:#dfe4ed}
+.wcontrols .close:active{background:#d9534f;color:white}
+.content{padding:15px;overflow:auto;flex:1;font-size:14px}
+.content h2{font-size:18px;margin:0 0 12px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.action{border:1px solid #d0d5df;border-radius:7px;background:#fff;color:#263044;padding:9px 12px;font-size:13px}
+.action:active{background:#e8f2ff}
+.drive{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e0e4ec;border-radius:9px;margin:8px 0;background:#fff}
+.drive .disk{font-size:24px}
+.drive small{display:block;color:#697386;margin-top:3px}
+.browserbar{display:flex;gap:7px;margin-bottom:12px}
+.browserbar input{min-width:0;flex:1;border:1px solid #d0d5df;border-radius:7px;padding:9px}
+.browserpage{min-height:180px;border:1px solid #e1e5ed;border-radius:9px;padding:18px;background:#fff}
+.browserpage h2{color:#2679c9}
+.setting{padding:12px 2px;border-bottom:1px solid #e2e5ec}
+.muted{color:#697386;font-size:12px}
+#toast{position:fixed;z-index:2000;left:50%;bottom:calc(var(--task-h) + 15px);transform:translateX(-50%);background:#20283b;color:white;padding:10px 15px;border-radius:9px;font-size:13px;display:none;box-shadow:0 6px 20px #0005;max-width:90vw;text-align:center}
+@media(max-width:520px){
+ :root{--task-h:56px}
+ #icons{top:9px;left:8px;grid-template-columns:repeat(2,68px);gap:8px}
+ .desktop-icon{width:68px;min-height:68px;font-size:11px}
+ .desktop-icon .ico{font-size:28px}
+ #taskbar{padding:0 7px;gap:5px}
+ .tb-btn{min-width:32px;height:38px;padding:0 5px}
+ #search{height:38px;padding:0 10px;max-width:none;font-size:12px}
+ #tray{gap:6px;font-size:14px}
+ #tray .optional{display:none}
+ #clock{font-size:10px;min-width:65px}
+ .window{width:calc(100vw - 12px);height:min(440px,calc(100% - 12px));border-radius:10px}
+ .titlebar{height:35px;min-height:35px}
+ .wcontrols button{width:34px}
+ .content{padding:12px}
+}
+@media(max-height:430px){
+ :root{--task-h:48px}
+ #icons{top:5px;left:7px;grid-auto-flow:column;grid-template-columns:repeat(3,68px);gap:5px}
+ .desktop-icon{min-height:62px}
+ .window{height:calc(100% - 8px)}
+}
 </style>
 </head>
 <body>
-<div class="desktop" id="desktop"></div>
-<div class="icons" id="icons"></div>
+<main id="desktop" aria-label="Bureau Mobox">
+ <div id="icons">
+  <button class="desktop-icon" data-open="pc"><span class="ico">🖥️</span><span>Ce PC</span></button>
+  <button class="desktop-icon" data-open="installer"><span class="ico">🧰</span><span>UiInstallateur</span></button>
+  <button class="desktop-icon" data-open="browser"><span class="ico">🌐</span><span>UiChrome</span></button>
+  <button class="desktop-icon" data-open="settings"><span class="ico">⚙️</span><span>Paramètres</span></button>
+ </div>
+</main>
 
-<div class="start" id="start">
-  <h3>Applications</h3>
-  <div class="app-list" id="appList"></div>
-  <div class="note">Bureau Mobox — interface de démonstration. L’exécution des fichiers Windows (.exe) nécessite un moteur compatible séparé.</div>
+<div id="startMenu">
+ <div class="menu-head">Applications</div>
+ <div class="menu-grid">
+  <button class="menu-app" data-open="pc"><b>🖥️</b>Ce PC</button>
+  <button class="menu-app" data-open="installer"><b>🧰</b>Installateur</button>
+  <button class="menu-app" data-open="browser"><b>🌐</b>UiChrome</button>
+  <button class="menu-app" data-open="settings"><b>⚙️</b>Paramètres</button>
+  <button class="menu-app" data-open="exe"><b>📦</b>Gestion EXE</button>
+ </div>
 </div>
+<div id="searchPanel"><input id="searchInput" placeholder="Rechercher une application ou un fichier…"></div>
 
-<div class="taskbar">
-  <div class="task-left">
-    <button class="tb" title="Vue des tâches" onclick="showAbout()">▦</button>
-  </div>
-  <div class="task-center">
-    <button class="tb" id="startBtn" title="Démarrer"><span class="logo"><i></i><i></i><i></i><i></i></span></button>
-    <label class="searchbox">⌕ <input id="search" placeholder="Rechercher" autocomplete="off"></label>
-    <button class="tb" title="Explorateur" onclick="launch('pc')">📁</button>
-    <button class="tb" title="Paramètres" onclick="launch('settings')">⚙</button>
-  </div>
-  <div class="tray">
-    <span>⌁</span><span>◖</span><span>▰</span>
-    <div class="clock"><div id="time"></div><div id="date"></div></div>
-  </div>
-</div>
+<section class="window" id="win-pc">
+ <header class="titlebar"><div class="wtitle">🖥️ Ce PC</div><div class="wcontrols"><button data-min>—</button><button data-max>□</button><button class="close" data-close>×</button></div></header>
+ <div class="content"><h2>Explorateur de fichiers</h2><div class="toolbar"><button class="action" data-toast="Actualisation de l'affichage">↻ Actualiser</button><button class="action" data-toast="La création de dossiers sera reliée au stockage Android">＋ Nouveau dossier</button></div>
+ <div class="drive"><span class="disk">💽</span><div><b>Stockage Android</b><small>Espace de stockage de l'appareil</small></div></div>
+ <div class="drive"><span class="disk">📁</span><div><b>Documents</b><small>Vos fichiers et dossiers</small></div></div>
+ <div class="drive"><span class="disk">⬇️</span><div><b>Téléchargements</b><small>Fichiers téléchargés</small></div></div>
+ <p class="muted">Interface de démonstration : l'accès réel aux fichiers Android nécessite une liaison native dans MainActivity.</p></div>
+</section>
 
+<section class="window" id="win-installer">
+ <header class="titlebar"><div class="wtitle">🧰 UiInstallateur</div><div class="wcontrols"><button data-min>—</button><button data-max>□</button><button class="close" data-close>×</button></div></header>
+ <div class="content"><h2>Installateur d'applications</h2><p>Ajoutez ici les installateurs compatibles avec l'environnement Mobox.</p><div class="toolbar"><button class="action" data-toast="Sélection de fichier à connecter au sélecteur Android">Choisir un fichier</button><button class="action" data-toast="L'installation réelle nécessite Wine et Box64">Installer</button></div><div class="drive"><span class="disk">📦</span><div><b>Fichier sélectionné</b><small>Aucun fichier sélectionné</small></div></div><p class="muted">Les fichiers EXE ne peuvent pas être exécutés par cette interface seule. Le moteur Wine/Box64 devra être ajouté.</p></div>
+</section>
+
+<section class="window" id="win-browser">
+ <header class="titlebar"><div class="wtitle">🌐 UiChrome</div><div class="wcontrols"><button data-min>—</button><button data-max>□</button><button class="close" data-close>×</button></div></header>
+ <div class="content"><h2>Navigation</h2><div class="browserbar"><input id="urlInput" value="https://www.google.com" aria-label="Adresse web"><button class="action" id="goUrl">Ouvrir</button></div><div class="browserpage"><h2>UiChrome</h2><p>Bienvenue dans le navigateur de démonstration Mobox.</p><p class="muted">Pour une navigation Internet réelle, il faudra connecter cette fenêtre à une WebView Android native.</p></div></div>
+</section>
+
+<section class="window" id="win-settings">
+ <header class="titlebar"><div class="wtitle">⚙️ Paramètres</div><div class="wcontrols"><button data-min>—</button><button data-max>□</button><button class="close" data-close>×</button></div></header>
+ <div class="content"><h2>Personnalisation</h2><div class="setting"><b>Affichage plein écran</b><p class="muted">Le bureau s'adapte automatiquement à la largeur et à la hauteur disponibles.</p></div><div class="setting"><b>Interface compacte</b><p class="muted">Icônes, barre des tâches et fenêtres redimensionnées pour mieux utiliser l'écran.</p></div><div class="setting"><b>Contrôle tactile</b><p class="muted">Les fenêtres peuvent être déplacées au doigt ou à la souris.</p></div><div class="setting"><b>Version</b><p class="muted">Mobox Desktop UI — V2</p></div></div>
+</section>
+
+<section class="window" id="win-exe">
+ <header class="titlebar"><div class="wtitle">📦 Gestionnaire EXE</div><div class="wcontrols"><button data-min>—</button><button data-max>□</button><button class="close" data-close>×</button></div></header>
+ <div class="content"><h2>Gestion des logiciels Windows</h2><p>Cette section est préparée pour accueillir les applications Windows installées.</p><div class="drive"><span class="disk">🪟</span><div><b>Environnement Windows</b><small>Moteur Wine/Box64 non connecté dans cette version de l'interface</small></div></div><button class="action" data-toast="Le moteur Windows doit être intégré avant de lancer un EXE">Vérifier l'environnement</button></div>
+</section>
+
+<footer id="taskbar">
+ <button class="tb-btn" id="startBtn" aria-label="Démarrer">▦</button>
+ <button class="tb-btn optional" data-open="pc" aria-label="Ce PC">🗂️</button>
+ <div id="search"><span>⌕</span><span>Rechercher</span></div>
+ <div id="taskApps"></div>
+ <div id="tray"><span class="optional">⌁</span><span>◖</span><span>▰</span><div id="clock">08:09<br>20-11-2026</div></div>
+</footer>
+<div id="toast"></div>
 <script>
-const $=s=>document.querySelector(s);
-const apps=[
- {id:"pc",name:"Ce PC",icon:"🖥️"},
- {id:"inst",name:"Installateur",icon:"🧰"},
- {id:"chrome",name:"Navigateur",icon:"🌐"},
- {id:"settings",name:"Paramètres",icon:"⚙️"},
- {id:"about",name:"À propos",icon:"ℹ️"}
-];
-let z=30,offset=0;
-function makeShortcuts(){
- apps.forEach(a=>{
-  const d=document.createElement("button");d.className="icon";d.innerHTML=`<span class="glyph">${a.icon}</span><span>${a.name}</span>`;d.onclick=()=>launch(a.id);$("#icons").appendChild(d);
-  const item=document.createElement("button");item.className="app-item";item.innerHTML=`<span>${a.icon}</span><span>${a.name}</span>`;item.onclick=()=>{ $("#start").classList.remove("open");launch(a.id);};$("#appList").appendChild(item);
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let z=30, toastTimer;
+function toast(msg){const t=$("#toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2200)}
+function openWindow(name){
+ const w=$("#win-"+name); if(!w)return;
+ $$(".window").forEach(x=>x.classList.remove("active"));
+ w.classList.add("active");w.style.zIndex=++z;$("#startMenu").classList.remove("open");$("#searchPanel").classList.remove("open");
+}
+function closeWindow(w){w.classList.remove("active");w.classList.remove("maximized")}
+$$("[data-open]").forEach(b=>b.addEventListener("click",()=>openWindow(b.dataset.open)));
+$("#startBtn").addEventListener("click",()=>$("#startMenu").classList.toggle("open"));
+$("#search").addEventListener("click",()=>{$("#searchPanel").classList.toggle("open");$("#startMenu").classList.remove("open");$("#searchInput").focus()});
+document.addEventListener("click",e=>{
+ const w=e.target.closest(".window");
+ if(w){w.style.zIndex=++z}
+ if(e.target.matches("[data-close]"))closeWindow(e.target.closest(".window"));
+ if(e.target.matches("[data-min]"))e.target.closest(".window").classList.remove("active");
+ if(e.target.matches("[data-max]"))e.target.closest(".window").classList.toggle("maximized");
+ if(e.target.matches("[data-toast]"))toast(e.target.dataset.toast);
+});
+function makeDraggable(w){
+ const bar=w.querySelector(".titlebar");let sx=0,sy=0,ox=0,oy=0,drag=false;
+ bar.addEventListener("pointerdown",e=>{
+  if(e.target.closest(".wcontrols")||w.classList.contains("maximized"))return;
+  drag=true;bar.setPointerCapture(e.pointerId);sx=e.clientX;sy=e.clientY;
+  const r=w.getBoundingClientRect();ox=r.left;oy=r.top;w.style.transform="none";w.style.left=ox+"px";w.style.top=oy+"px";w.style.zIndex=++z;
  });
+ bar.addEventListener("pointermove",e=>{
+  if(!drag)return;const maxX=innerWidth-w.offsetWidth,maxY=innerHeight-parseInt(getComputedStyle(document.documentElement).getPropertyValue("--task-h"))-w.offsetHeight;
+  w.style.left=Math.max(0,Math.min(maxX,ox+e.clientX-sx))+"px";
+  w.style.top=Math.max(0,Math.min(maxY,oy+e.clientY-sy))+"px";
+ });
+ const stop=()=>drag=false;bar.addEventListener("pointerup",stop);bar.addEventListener("pointercancel",stop);
 }
-function content(id){
- if(id==="pc")return `<div class="toolbar"><button class="toolbtn">← Retour</button><button class="toolbtn">↑</button><span>Ce PC　›　Stockage</span></div><div class="filegrid"><div class="filetile"><b>💽</b>Disque local (C:)</div><div class="filetile"><b>📁</b>Bureau</div><div class="filetile"><b>📂</b>Documents</div><div class="filetile"><b>⬇️</b>Téléchargements</div><div class="filetile"><b>🖼️</b>Images</div><div class="filetile"><b>🎵</b>Musique</div></div><p class="note">Explorateur visuel : les dossiers réels du téléphone ne sont pas encore reliés à cette interface.</p>`;
- if(id==="inst")return `<h3>Installateur de programmes</h3><p>Ajoute ici les installateurs compatibles avec le moteur Windows qui sera intégré au projet.</p><div class="note">Aucun programme n’est installé pour le moment. Cette fenêtre est une maquette et ne lance pas les fichiers .exe.</div><button class="primary" onclick="alert('Le moteur d’installation n’est pas encore intégré.')">Choisir un fichier</button>`;
- if(id==="chrome")return `<h3>Navigateur</h3><form class="toolbar" onsubmit="event.preventDefault();browse(this.url.value)"><input class="address" name="url" placeholder="Rechercher sur le Web ou saisir une adresse"><button class="primary">Ouvrir</button></form><div class="note">La navigation dépend des autorisations et de la configuration de la WebView Android.</div><button class="toolbtn" onclick="browse('https://www.google.com')">Ouvrir Google</button>`;
- if(id==="settings")return `<h3>Paramètres</h3><div class="setting-row"><span>Thème</span><button class="toolbtn" onclick="toggleTheme()">Basculer clair/sombre</button></div><div class="setting-row"><span>Affichage</span><span>Plein écran adaptatif</span></div><div class="setting-row"><span>Interface</span><span>Compacte</span></div><div class="setting-row"><span>Version</span><span>Mobox Desktop V2</span></div>`;
- return `<h3>Mobox Desktop V2</h3><p>Interface de bureau inspirée de Windows, optimisée pour les écrans Android.</p><p>Les fenêtres, le menu Démarrer, la recherche locale et les réglages sont interactifs.</p><div class="note">Ce bureau HTML ne constitue pas Windows et ne peut pas exécuter seul les logiciels .exe.</div>`;
-}
-function launch(id){
- const a=apps.find(x=>x.id===id)||apps[4];const w=document.createElement("section");w.className="window";w.style.zIndex=++z;
- w.style.left=`${Math.max(0,3+offset*2)}vw`;w.style.top=`${Math.max(0,3+offset*2)}vh`;offset=(offset+1)%8;
- w.innerHTML=`<div class="winbar"><div class="win-title"><span>${a.icon}</span><strong>${a.name}</strong></div><div class="win-actions"><button class="win-action minimize" title="Réduire">—</button><button class="win-action maximize" title="Agrandir">□</button><button class="win-action close" title="Fermer">✕</button></div></div><div class="winbody">${content(id)}</div>`;
- w.querySelector(".close").onclick=()=>w.remove();
- w.querySelector(".minimize").onclick=()=>w.classList.add("hidden");
- w.querySelector(".maximize").onclick=()=>w.classList.toggle("max");
- w.addEventListener("pointerdown",()=>w.style.zIndex=++z);
- const bar=w.querySelector(".winbar");let drag=false,dx=0,dy=0;
- bar.addEventListener("pointerdown",e=>{if(e.target.closest("button")||w.classList.contains("max"))return;drag=true;dx=e.clientX-w.offsetLeft;dy=e.clientY-w.offsetTop;bar.setPointerCapture(e.pointerId)});
- bar.addEventListener("pointermove",e=>{if(!drag)return;w.style.left=Math.max(0,Math.min(innerWidth-w.offsetWidth,e.clientX-dx))+"px";w.style.top=Math.max(0,Math.min(innerHeight-w.offsetHeight-45,e.clientY-dy))+"px"});
- bar.addEventListener("pointerup",()=>drag=false);bar.addEventListener("pointercancel",()=>drag=false);
- document.body.appendChild(w);
-}
-function browse(value){let v=(value||"").trim();if(!v)return;if(!/^https?:\/\//i.test(v))v=/\s/.test(v)?"https://www.google.com/search?q="+encodeURIComponent(v):"https://"+v;window.open(v,"_blank");}
-function toggleTheme(){const root=document.documentElement;const dark=root.dataset.theme!=="light";root.dataset.theme=dark?"light":"dark";document.body.style.background=dark?"#e9edf5":"#06112b";alert("Thème modifié pour cette session.");}
-function showAbout(){launch("about")}
-$("#startBtn").onclick=()=>$("#start").classList.toggle("open");
-document.addEventListener("click",e=>{if(!e.target.closest("#start")&&!e.target.closest("#startBtn"))$("#start").classList.remove("open")});
-$("#search").addEventListener("input",e=>{const q=e.target.value.toLowerCase();$("#start").classList.add("open");document.querySelectorAll(".app-item").forEach((el,i)=>el.classList.toggle("hidden",!apps[i].name.toLowerCase().includes(q)))});
-function tick(){const d=new Date();$("#time").textContent=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});$("#date").textContent=d.toLocaleDateString("fr-FR");}
-makeShortcuts();tick();setInterval(tick,15000);
+$$(".window").forEach(makeDraggable);
+$("#goUrl").addEventListener("click",()=>{let u=$("#urlInput").value.trim();if(!/^https?:\/\//i.test(u))u="https://"+u;window.open(u,"_blank","noopener");});
+$("#searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){const q=e.target.value.toLowerCase();const match=[["pc",["pc","fichier","explorateur"]],["installer",["installateur","installer"]],["browser",["chrome","navigateur","internet"]],["settings",["paramètre","réglage"]],["exe",["exe","windows"]]].find(([k,words])=>words.some(x=>q.includes(x)));if(match)openWindow(match[0]);else toast("Aucun résultat dans cette démonstration");}});
+function updateClock(){const d=new Date();$("#clock").innerHTML=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString("fr-FR")}
+updateClock();setInterval(updateClock,15000);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#startMenu").classList.remove("open");$("#searchPanel").classList.remove("open")}});
 </script>
 </body>
 </html>
